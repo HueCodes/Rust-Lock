@@ -1,0 +1,54 @@
+# Binaries
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+gh-runner-controller
+controller
+
+# Test artifacts
+*.test
+*.out
+coverage.txt
+coverage.out
+coverage.html
+
+# Config files with secrets
+config.yaml
+*.pem
+*.key
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+.backup/
+
+# Web dashboard
+web/dashboard/node_modules/
+web/dashboard/dist/
+web/dashboard/.next/
+
+# Go workspace
+go.work
+go.work.sum

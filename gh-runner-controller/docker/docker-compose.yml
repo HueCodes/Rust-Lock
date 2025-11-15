@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  controller:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: gh-runner-controller
+    env_file:
+      - ../.env
+    environment:
+      - ENV=production
+      - RUNNER_PROVIDER=docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # For Docker provider
+    ports:
+      - "8080:8080"  # API/Webhook port
+      - "9090:9090"  # Metrics port
+    restart: unless-stopped
+    networks:
+      - runner-network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: gh-runner-prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    ports:
+      - "9091:9090"
+    restart: unless-stopped
+    networks:
+      - runner-network
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: gh-runner-grafana
+    volumes:
+      - grafana-data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    restart: unless-stopped
+    networks:
+      - runner-network
+
+networks:
+  runner-network:
+    driver: bridge
+
+volumes:
+  prometheus-data:
+  grafana-data:

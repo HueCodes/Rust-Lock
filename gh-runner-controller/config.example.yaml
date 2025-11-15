@@ -1,0 +1,14 @@
+# GitHub Configuration
+# GITHUB_TOKEN=ghp_your_token_here
+# GITHUB_ORG=your-org  # OR
+# GITHUB_REPO=owner/repo
+
+# Runner Configuration
+# MIN_RUNNERS=1
+# MAX_RUNNERS=10
+# SCALE_UP_THRESHOLD=5
+# SCALE_DOWN_THRESHOLD=0
+# CHECK_INTERVAL_SEC=30
+
+# Logging
+# LOG_LEVEL=info
