@@ -22,7 +22,7 @@ async fn securefileops_roundtrip() -> Result<()> {
     };
 
     // use KeyManager and SecureFileOps
-    let km = key_manager::KeyManager::new(&cfg)?;
+    let km = key_manager::KeyManager::new(&cfg).await?;
     let ops = storagefile_ops::SecureFileOps::new(km, cfg.storage_dir.clone());
 
     let name = "it.txt";
@@ -54,7 +54,7 @@ async fn securefileops_roundtrip_compressed() -> Result<()> {
     };
 
     // use KeyManager and SecureFileOps with compression enabled
-    let km = key_manager::KeyManager::new(&cfg)?;
+    let km = key_manager::KeyManager::new(&cfg).await?;
     let ops =
         storagefile_ops::SecureFileOps::new(km, cfg.storage_dir.clone()).with_compression(true);
 

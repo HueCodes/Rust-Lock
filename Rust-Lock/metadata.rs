@@ -11,10 +11,13 @@ pub struct FileMetadata {
 
 impl FileMetadata {
     pub async fn record(path: &Path, size: u64) -> Result<()> {
-        let meta = Self {
-            filename: path.file_name().unwrap().to_string_lossy().into_owned(),
-            size,
-        };
+        let filename = path
+            .file_name()
+            .ok_or_else(|| anyhow::anyhow!("path has no filename: {}", path.display()))?
+            .to_string_lossy()
+            .into_owned();
+
+        let meta = Self { filename, size };
         let json = serde_json::to_string_pretty(&meta)?;
         let meta_path = path.with_extension("meta.json");
         fs::write(meta_path, json).await?;
