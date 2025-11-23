@@ -117,7 +117,7 @@ async fn main() -> Result<()> {
 
 /// Initialize SecureFS configuration and generate encryption key
 async fn cmd_init(config_path: &str, storage_dir: &str, key_path: &str) -> Result<()> {
-    println!("🔐 Initializing SecureFS...");
+    println!("Initializing SecureFS...");
 
     // Create config
     let cfg = config::Config {
@@ -155,13 +155,13 @@ async fn cmd_init(config_path: &str, storage_dir: &str, key_path: &str) -> Resul
         .await
         .with_context(|| format!("writing config to '{}'", config_path))?;
 
-    println!("✅ Initialization complete!");
-    println!("   Config:  {}", config_path);
-    println!("   Key:     {}", key_path);
-    println!("   Storage: {}", storage_dir);
+    println!("Initialization complete!");
+    println!("Config:  {}", config_path);
+    println!("Key:     {}", key_path);
+    println!("Storage: {}", storage_dir);
     println!();
-    println!("⚠️  IMPORTANT: Keep your key file secure and backed up!");
-    println!("   Without it, your encrypted files cannot be recovered.");
+    println!("IMPORTANT: Keep your key file secure and backed up!");
+    println!("Without it, your encrypted files cannot be recovered.");
 
     Ok(())
 }
@@ -194,16 +194,16 @@ async fn cmd_encrypt(
         .len();
 
     println!(
-        "🔒 Encrypting: {} → {} ({} bytes)",
+        "Encrypting: {} -> {} ({} bytes)",
         input.display(),
         output_name,
         input_size
     );
     if compress {
-        println!("   📦 Compression: enabled");
+        println!("Compression: enabled");
     }
     if stream {
-        println!("   🌊 Mode: streaming");
+        println!("Mode: streaming");
     }
 
     if stream {
@@ -216,7 +216,7 @@ async fn cmd_encrypt(
             .write_encrypted_stream(&output_name, &mut file)
             .await?;
 
-        println!("✅ Encrypted {} bytes", bytes);
+        println!("Encrypted {} bytes", bytes);
     } else {
         // In-memory mode for smaller files
         let data = fs::read(input)
@@ -225,7 +225,7 @@ async fn cmd_encrypt(
 
         ops.write_encrypted(&output_name, &data).await?;
 
-        println!("✅ Encrypted successfully");
+        println!("Encrypted successfully");
     }
 
     Ok(())
@@ -242,9 +242,9 @@ async fn cmd_decrypt(
     let km = KeyManager::new(&cfg).await?;
     let ops = SecureFileOps::new(km, cfg.storage_dir);
 
-    println!("🔓 Decrypting: {}", name);
+    println!("Decrypting: {}", name);
     if stream {
-        println!("   🌊 Mode: streaming");
+        println!("Mode: streaming");
     }
 
     if stream {
@@ -257,19 +257,19 @@ async fn cmd_decrypt(
 
                 let (bytes, compressed) = ops.read_encrypted_stream(name, &mut file).await?;
 
-                println!("✅ Decrypted {} bytes", bytes);
+                println!("Decrypted {} bytes", bytes);
                 if compressed {
-                    println!("   📦 Was compressed");
+                    println!("Was compressed");
                 }
-                println!("   → {:?}", output_path);
+                println!("Output: {:?}", output_path);
             }
             None => {
                 let mut stdout = tokio::io::stdout();
                 let (bytes, compressed) = ops.read_encrypted_stream(name, &mut stdout).await?;
 
-                eprintln!("✅ Decrypted {} bytes to stdout", bytes);
+                eprintln!("Decrypted {} bytes to stdout", bytes);
                 if compressed {
-                    eprintln!("   📦 Was compressed");
+                    eprintln!("Was compressed");
                 }
             }
         }
@@ -283,13 +283,13 @@ async fn cmd_decrypt(
                     .await
                     .with_context(|| format!("writing to {:?}", output_path))?;
 
-                println!("✅ Decrypted {} bytes", data.len());
-                println!("   → {:?}", output_path);
+                println!("Decrypted {} bytes", data.len());
+                println!("Output: {:?}", output_path);
             }
             None => {
                 // Write to stdout
                 io::stdout().write_all(&data)?;
-                eprintln!("✅ Decrypted {} bytes to stdout", data.len());
+                eprintln!("Decrypted {} bytes to stdout", data.len());
             }
         }
     }
@@ -306,11 +306,11 @@ async fn cmd_list(config_path: &str, verbose: bool) -> Result<()> {
     let files = ops.list_files().await?;
 
     if files.is_empty() {
-        println!("📂 No encrypted files found");
+        println!("No encrypted files found");
         return Ok(());
     }
 
-    println!("📂 Encrypted files ({} total):", files.len());
+    println!("Encrypted files ({} total):", files.len());
     println!();
 
     if verbose {
@@ -318,7 +318,7 @@ async fn cmd_list(config_path: &str, verbose: bool) -> Result<()> {
         println!("{}", "─".repeat(64));
 
         for (name, size, has_meta) in files {
-            let meta_status = if has_meta { "✓" } else { "✗" };
+            let meta_status = if has_meta { "yes" } else { "no" };
             println!("{:<40} {:>12} {:>10}", name, size, meta_status);
         }
     } else {
@@ -343,7 +343,7 @@ async fn cmd_remove(config_path: &str, name: &str, yes: bool) -> Result<()> {
 
     // Confirm deletion unless --yes flag is set
     if !yes {
-        print!("⚠️  Delete '{}'? This cannot be undone. [y/N]: ", name);
+        print!("Delete '{}'? This cannot be undone. [y/N]: ", name);
         io::stdout().flush()?;
 
         let mut response = String::new();
@@ -357,7 +357,7 @@ async fn cmd_remove(config_path: &str, name: &str, yes: bool) -> Result<()> {
 
     ops.delete_file(name).await?;
 
-    println!("✅ Deleted '{}'", name);
+    println!("Deleted '{}'", name);
 
     Ok(())
 }
@@ -368,7 +368,7 @@ async fn cmd_status(config_path: &str) -> Result<()> {
     let km = KeyManager::new(&cfg).await?;
     let ops = SecureFileOps::new(km, cfg.storage_dir.clone());
 
-    println!("📊 SecureFS Status");
+    println!("SecureFS Status");
     println!();
 
     // Config info
@@ -380,7 +380,7 @@ async fn cmd_status(config_path: &str) -> Result<()> {
 
     // Check if key exists
     let key_exists = fs::try_exists(&cfg.key_path).await.unwrap_or(false);
-    println!("Key Status:      {}", if key_exists { "✓ Present" } else { "✗ Missing" });
+    println!("Key Status:      {}", if key_exists { "Present" } else { "Missing" });
     println!();
 
     // File statistics
@@ -399,7 +399,7 @@ async fn cmd_status(config_path: &str) -> Result<()> {
     let orphaned = files.iter().filter(|(_, _, has_meta)| !*has_meta).count();
     if orphaned > 0 {
         println!();
-        println!("⚠️  {} file(s) missing metadata", orphaned);
+        println!("WARNING: {} file(s) missing metadata", orphaned);
     }
 
     Ok(())

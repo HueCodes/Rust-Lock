@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.2.0] - 2025-11-23
 
-### 🎉 Major Release - Performance, Security, and CLI
+### Major Release - Performance, Security, and CLI
 
 This release represents a significant upgrade with **10 completed improvements** focused on performance, security, and usability.
 
@@ -35,7 +35,6 @@ This release represents a significant upgrade with **10 completed improvements**
   - `securefs list` - List encrypted files (with `--verbose` table view)
   - `securefs remove` - Delete encrypted files (with confirmation)
   - `securefs status` - Show storage statistics and health check
-  - Beautiful emoji-based output with progress indicators
   - Supports large file streaming mode
 
 #### Library APIs
@@ -53,7 +52,7 @@ This release represents a significant upgrade with **10 completed improvements**
 
 ### Changed
 
-#### Breaking Changes ⚠️
+#### Breaking Changes
 - **KeyManager.key_bytes is now private** (security fix)
   - Prevents accidental key exposure/logging
   - Only `cipher()` method provides controlled access
@@ -87,8 +86,8 @@ This release represents a significant upgrade with **10 completed improvements**
 - **Optimized**: Reduced tokio feature set for smaller binaries
 
 ### Testing
-- ✅ All 11 tests passing (9 unit tests + 2 integration tests)
-- ✅ CLI manually tested with full workflow:
+- All 11 tests passing (9 unit tests + 2 integration tests)
+- CLI manually tested with full workflow:
   - init → encrypt (standard & streaming) → list → decrypt → remove → status
   - 5MB file streaming with compression verified
   - File integrity confirmed (decrypted = original)
