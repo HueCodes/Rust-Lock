@@ -208,7 +208,3 @@ MIT License - see [LICENSE](LICENSE) for details
 ## Disclaimer
 
 This is cryptographic software. While it uses industry-standard algorithms and best practices, it has not been independently audited. Use in production at your own risk.
-
----
-
-Built with 🦀 Rust
