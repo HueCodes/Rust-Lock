@@ -144,7 +144,7 @@ Integration tests verify:
 - Key management
 - File operations
 
-## 📊 Performance
+## Performance
 
 - **Encryption overhead**: ~microseconds per operation
 - **Compression ratio**: Varies by data (text: ~60-70% reduction)
@@ -159,7 +159,7 @@ Integration tests verify:
 - **Secure key generation** using OS entropy (`OsRng`)
 - **Restrictive permissions** on key files (Unix: 0600)
 
-## 🔧 Configuration Options
+## Configuration Options
 
 ```rust
 pub struct Config {
@@ -173,7 +173,7 @@ Load from JSON:
 let cfg = Config::load("config.json")?;
 ```
 
-## 📝 Building
+## Building
 
 ```bash
 # Development build
@@ -196,11 +196,11 @@ Contributions welcome! Please:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 MIT License - see [LICENSE](LICENSE) for details
 
-## 🔗 Links
+## Links
 
 - **Repository**: https://github.com/HueCodes/Rust-Lock
 - **Issues**: https://github.com/HueCodes/Rust-Lock/issues
