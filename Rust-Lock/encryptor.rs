@@ -1,4 +1,4 @@
-use anyhow::Result;
+use anyhow::{bail, Result};
 use chacha20poly1305::aead::{Aead, AeadCore, OsRng, Payload};
 use chacha20poly1305::XChaCha20Poly1305;
 use chacha20poly1305::XNonce;
@@ -46,6 +46,9 @@ impl Encryptor {
 
     /// Decrypts a buffer produced by `encrypt`. Expects the first 24 bytes to be the nonce.
     pub fn decrypt(&self, ciphertext: &[u8], aad: Option<&[u8]>) -> Result<Vec<u8>> {
+        if ciphertext.len() < 24 {
+            bail!("ciphertext too short: expected nonce prefix");
+        }
         let (nonce_bytes, data) = ciphertext.split_at(24);
         #[allow(deprecated)]
         let nonce = XNonce::from_slice(nonce_bytes);
