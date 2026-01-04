@@ -1,0 +1,22 @@
+# Build artifacts
+/target/
+
+# Runtime/storage
+/storage/
+
+# Key files
+*.key
+*.bin
+keyfile.bin
+testkey.bin
+
+# OS files
+.DS_Store
+
+# Editor files
+.vscode/
+*.swp
+*.swo
+
+# Cargo
+Cargo.lock
